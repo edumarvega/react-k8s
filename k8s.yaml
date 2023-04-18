@@ -25,13 +25,15 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: react-app
-spec:
-  type: NodePort
-  selector:
+  name: load-balancer
+  labels:
     app: react-app
+spec:
+  type: LoadBalancer
   ports:
   - port: 80
     targetPort: 80
     protocol: TCP
     nodePort: 31000
+  selector:
+    app: react-app
