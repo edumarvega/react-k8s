@@ -3,20 +3,24 @@ kind: Deployment
 metadata:
   name: mantenimiento
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
-      role: mantenimiento
+      app: mantenimiento
   template:
     metadata:
       labels:
-        role: mantenimiento
+        app: mantenimiento
     spec:
       containers:
       - name: mantenimiento
-        image: harbor.osde.ar/os-turnos/mantenimiento-16:7086cbc4
+        image: edumarvega/react-app
+        resources:
+          limits:
+            memory: "256Mi"
+            cpu: "500m"
         ports:
-        - containerPort: 8080
+        - containerPort: 80
 ---
 apiVersion: v1
 kind: Service
@@ -24,9 +28,10 @@ metadata:
   name: mantenimiento
 spec:
   type: NodePort
-  ports:
-  - port: 8080
-    targetPort: 8080
-    nodePort: 30000
   selector:
-    role: mantenimiento
+    app: mantenimiento
+  ports:
+  - port: 80
+    targetPort: 80
+    protocol: TCP
+    nodePort: 31000
