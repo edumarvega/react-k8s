@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: mantenimiento
-        image: edumarvega/react-app
+        image: edumarvega/manto-turnos
         resources:
           limits:
             memory: "256Mi"
