@@ -1,39 +1,32 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: react-app
+  name: mantenimiento
 spec:
-  replicas: 1
+  replicas: 3
   selector:
     matchLabels:
-      app: react-app
+      role: mantenimiento
   template:
     metadata:
       labels:
-        app: react-app
+        role: mantenimiento
     spec:
       containers:
-      - name: react-app
-        image: edumarvega/react-app
-        resources:
-          limits:
-            memory: "256Mi"
-            cpu: "500m"
+      - name: mantenimiento
+        image: harbor.osde.ar/os-turnos/mantenimiento-16:7086cbc4
         ports:
-        - containerPort: 80
+        - containerPort: 8080
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: load-balancer
-  labels:
-    app: react-app
+  name: mantenimiento
 spec:
-  type: LoadBalancer
+  type: NodePort
   ports:
-  - port: 80
-    targetPort: 80
-    protocol: TCP
-    nodePort: 31000
+  - port: 8080
+    targetPort: 8080
+    nodePort: 30000
   selector:
-    app: react-app
+    role: mantenimiento
